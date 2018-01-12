@@ -9,7 +9,7 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - sakai_webapps:/opt/apache-tomcat-8.0.32/
+      - sakai_webapps:/usr/local/tomcat/
   mysql:
     image: mysql:5.6
     container_name: sakai_mysql
