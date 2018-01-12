@@ -1,0 +1,35 @@
+version: "3"
+services:
+  tomcat:
+    image: sakai_tomcat
+    build: ./tomcat
+    container_name: sakai_tomcat
+    depends_on:
+      - sakai
+    ports:
+      - "8081:8080"
+    volumes:
+      - sakai_webapps:/opt/apache-tomcat-8.0.32/
+  mysql:
+    image: mysql:5.6
+    container_name: sakai_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysqlroot
+      - MYSQL_USER=sakaiuser
+      - MYSQL_PASSWORD=sakaipassword
+      - MYSQL_DATABASE=sakai
+    volumes:
+      - ./mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
+  sakai:
+    image: sakai
+    build: ./sakai
+    container_name: sakai
+    tty: true
+    depends_on:
+      - mysql
+    volumes:
+      - sakai_webapps:/sakai-target
+volumes:
+  sakai_webapps:
